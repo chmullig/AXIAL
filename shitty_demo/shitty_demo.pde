@@ -41,12 +41,16 @@ void setup() {
     map.panTo(new Location(40.75f, -74f));
 
     checkins = GeoJSONReader.loadData(this, "data/foursquare.geojson");
+        System.out.println(checkins.get(0).getProperty("timestamp"));
+    Collections.sort(checkins, new FeatureByTimestampComparer());
+
     checkinMarkers = MapUtils.createSimpleMarkers(checkins);
 }
 
 void draw() {
     if (frame >= 0 && frame < checkinMarkers.size()) {
       map.addMarkers(checkinMarkers.get(frame));
+      System.out.println(checkins.get(frame).getStringProperty("datetime"));
     }
     frame++;
     map.draw();
@@ -60,4 +64,19 @@ void keyPressed() {
     } else if (key == '3') {
         map.mapDisplay.setProvider(provider3);
     }
+}
+
+public class FeatureByTimestampComparer implements Comparator<Feature> {
+  //@Override
+  public int compare(Feature x, Feature y) {
+    // TODO: Handle null x or y values
+    return compare((Integer)x.getProperty("timestamp"), (Integer)y.getProperty("timestamp"));
+  }
+
+  // I don't know why this isn't in Long...
+  private int compare(int a, int b) {
+    return a < b ? -1
+         : a > b ? 1
+         : 0;
+  }
 }
