@@ -25,36 +25,56 @@ AbstractMapProvider provider2;
 AbstractMapProvider provider3;
 List<Feature> checkins;
 List<Marker> checkinMarkers;
-int time = 1370059200;
-int frameLength = 60*60;
-int frame = -100;
+int initialTime = 1370059200;
+int currentTime = initialTime;
+int frameLength = 60*30;
+int lastPos = 0;
+int WIDTH = 800;
+int HEIGHT = 600;
+AxialMarkerManager mm;
 
 void setup() {
-    size(800, 600, GLConstants.GLGRAPHICS);
+    size(WIDTH, HEIGHT, GLConstants.GLGRAPHICS);
  
     provider1 = new OpenStreetMap.OpenStreetMapProvider();
     provider2 = new Microsoft.AerialProvider();
     provider3 = new OpenStreetMap.CloudmadeProvider(CMAPIKey, 23058);
     map = new UnfoldingMap(this, provider3);
     MapUtils.createDefaultEventDispatcher(this, map);
-    map.zoomToLevel(12);
-    map.panTo(new Location(40.75f, -74f));
+    map.zoomToLevel(13);
+    map.panTo(new Location(40.738f, -74f));
+    
+    fill(0);  // Black
+    // set up the font (system default sans serif)
+    textFont(createFont("SansSerif",18));
+    textAlign(LEFT);
 
     checkins = GeoJSONReader.loadData(this, "data/foursquare.geojson");
-        System.out.println(checkins.get(0).getProperty("timestamp"));
     Collections.sort(checkins, new FeatureByTimestampComparer());
-
-    checkinMarkers = MapUtils.createSimpleMarkers(checkins);
+    MarkerFactory mf = new MarkerFactory();
+    mf.setPointClass(FoursquareMarker.class);
+    
+    checkinMarkers = mf.createMarkers(checkins);
+    System.out.println(checkinMarkers.get(0));
+    
+    for(int i = 0; i < checkins.size(); i++) {
+      ((FoursquareMarker)(checkinMarkers.get(i))).setTimestamp((Integer)(checkins.get(i).getProperty("timestamp")));
+    }
+    mm = new AxialMarkerManager();
+    mm.addMarkers(checkinMarkers);
+    
+    map.addMarkerManager(mm);
 }
 
 void draw() {
-    if (frame >= 0 && frame < checkinMarkers.size()) {
-      map.addMarkers(checkinMarkers.get(frame));
-      System.out.println(checkins.get(frame).getStringProperty("datetime"));
-    }
-    frame++;
-    map.draw();
+  currentTime += frameLength;
+  mm.setTimestamp(currentTime);
+  
+  map.draw();
+  text(new Date((long)currentTime*1000).toString(), 5, HEIGHT-5);
 }
+
+
 
 void keyPressed() {
     if (key == '1') {
