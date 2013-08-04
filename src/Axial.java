@@ -42,7 +42,7 @@ public class Axial extends PApplet {
     AbstractMapProvider provider3;
     List<Feature> checkins;
     List<Marker> checkinMarkers;
-    int initialTime = 1370059200;
+    int initialTime = 1370040000;
     int endTime = 1376107200;
     int currentTime = initialTime;
     int frameLength = 60*30;
@@ -64,18 +64,17 @@ public class Axial extends PApplet {
         map = new UnfoldingMap(this, provider3);
         MapUtils.createDefaultEventDispatcher(this, map);
         map.zoomToLevel(13);
-        map.panTo(new Location(40.738f, -74f));
+        map.panTo(new Location(40.735f, -73.99f));
 
         fill(0);  // Black
-        // set up the font (system default sans serif)
         textFont(createFont("SansSerif",18));
         textAlign(LEFT);
 
+        //Load Foursquare checkins
         checkins = GeoJSONReader.loadData(this, "foursquare.geojson");
         Collections.sort(checkins, new FeatureByTimestampComparer());
         MarkerFactory mf = new MarkerFactory();
         mf.setPointClass(FoursquareMarker.class);
-
         checkinMarkers = mf.createMarkers(checkins);
 
         for(int i = 0; i < checkins.size(); i++) {
@@ -83,16 +82,15 @@ public class Axial extends PApplet {
         }
         mm = new AxialMarkerManager();
         mm.addMarkers(checkinMarkers);
-
         map.addMarkerManager(mm);
     }
 
     public void draw() {
         currentTime += frameLength;
         mm.setTimestamp(currentTime);
-
         map.draw();
         text(new Date((long)currentTime*1000).toString(), 5, HEIGHT-5);
+
         saveFrame("frames/frame-######.tif");
         if (currentTime > endTime) {
             exit();

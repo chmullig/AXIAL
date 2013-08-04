@@ -40,7 +40,7 @@ public class FoursquareMarker extends SimplePointMarker {
         pg.pushStyle();
         pg.noStroke();
         pg.fill(200, 200, 0, alphaLevel);
-        pg.ellipse(x, y, 5, 5);
+        pg.ellipse(x, y, 7, 7);
         pg.popStyle();
     }
 }
