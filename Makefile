@@ -24,8 +24,7 @@ frames/frame-000000.tif: build/Axial.jar
 	java -cp $(JARS):src:library -Djava.library.path=$(NATIVE_OPENGL) Axial
 
 video.mp4: frames/frame-000000.tif
-	ffmpeg -f image2 -r 25 -i shitty_demo/frames/frame-%06d.tif -r 25 -i ~/Dropbox/05\ -\ Empire\ State\ Of\ Mind\ \[Jay-Z\ +\ Alicia\ Keys\]\ \
-(Explicit\).mp3  -c:v libx264 -pix_fmt yuv420p -threads 4 --shortest video.mp4
+	ffmpeg -f image2 -r 25 -i shitty_demo/frames/frame-%06d.tif -r 25 -i ~/Dropbox/05\ -\ Empire\ State\ Of\ Mind\ \[Jay-Z\ +\ Alicia\ Keys\]\ \(Explicit\).mp3  -c:v libx264 -pix_fmt yuv420p -threads 4 -shortest video.mp4
 
 clean:
 	rm -f src/*.class
