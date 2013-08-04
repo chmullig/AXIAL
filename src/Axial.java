@@ -1,21 +1,58 @@
-import processing.opengl.*;
+import processing.core.*; 
+import processing.xml.*; 
 
-import codeanticode.glgraphics.*;
+//import javax.media.opengl.*;
+import processing.opengl.*; 
+import codeanticode.glgraphics.*; 
+import de.fhpotsdam.unfolding.mapdisplay.*; 
+import de.fhpotsdam.unfolding.utils.*; 
+import de.fhpotsdam.unfolding.marker.*; 
+import de.fhpotsdam.unfolding.tiles.*; 
+import de.fhpotsdam.unfolding.interactions.*; 
+import de.fhpotsdam.unfolding.ui.*; 
+import de.fhpotsdam.unfolding.*; 
+import de.fhpotsdam.unfolding.core.*; 
+import de.fhpotsdam.unfolding.data.*; 
+import de.fhpotsdam.unfolding.geo.*; 
+import de.fhpotsdam.unfolding.texture.*; 
+import de.fhpotsdam.unfolding.events.*; 
+import de.fhpotsdam.utils.*; 
+import de.fhpotsdam.unfolding.providers.*; 
 
-import de.fhpotsdam.unfolding.mapdisplay.*;
-import de.fhpotsdam.unfolding.utils.*;
-import de.fhpotsdam.unfolding.marker.*;
-import de.fhpotsdam.unfolding.tiles.*;
-import de.fhpotsdam.unfolding.interactions.*;
-import de.fhpotsdam.unfolding.ui.*;
-import de.fhpotsdam.unfolding.*;
-import de.fhpotsdam.unfolding.core.*;
-import de.fhpotsdam.unfolding.data.*;
-import de.fhpotsdam.unfolding.geo.*;
-import de.fhpotsdam.unfolding.texture.*;
-import de.fhpotsdam.unfolding.events.*;
-import de.fhpotsdam.utils.*;
-import de.fhpotsdam.unfolding.providers.*;
+import java.applet.*; 
+import java.awt.Dimension; 
+import java.awt.Frame; 
+import java.awt.event.MouseEvent; 
+import java.awt.event.KeyEvent; 
+import java.awt.event.FocusEvent; 
+import java.awt.Image; 
+import java.io.*; 
+import java.net.*; 
+import java.text.*; 
+import java.util.*; 
+import java.util.zip.*; 
+import java.util.regex.*; 
+
+public class Axial extends PApplet {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 UnfoldingMap map;
@@ -30,11 +67,15 @@ int endTime = 1376107200;
 int currentTime = initialTime;
 int frameLength = 60*30;
 int lastPos = 0;
-int WIDTH = 1920;
-int HEIGHT = 1080;
+int WIDTH = 1024;
+int HEIGHT = 768;
 AxialMarkerManager mm;
 
-void setup() {
+boolean sketchFullScreen() {
+  return false;
+}
+
+public void setup() {
     size(WIDTH, HEIGHT, GLConstants.GLGRAPHICS);
  
     provider1 = new OpenStreetMap.OpenStreetMapProvider();
@@ -50,7 +91,7 @@ void setup() {
     textFont(createFont("SansSerif",18));
     textAlign(LEFT);
 
-    checkins = GeoJSONReader.loadData(this, "data/foursquare.geojson");
+    checkins = GeoJSONReader.loadData(this, "foursquare.geojson");
     Collections.sort(checkins, new FeatureByTimestampComparer());
     MarkerFactory mf = new MarkerFactory();
     mf.setPointClass(FoursquareMarker.class);
@@ -66,7 +107,7 @@ void setup() {
     map.addMarkerManager(mm);
 }
 
-void draw() {
+public void draw() {
   currentTime += frameLength;
   mm.setTimestamp(currentTime);
   
@@ -80,7 +121,7 @@ void draw() {
 
 
 
-void keyPressed() {
+public void keyPressed() {
     if (key == '1') {
         map.mapDisplay.setProvider(provider1);
     } else if (key == '2') {
@@ -102,5 +143,9 @@ public class FeatureByTimestampComparer implements Comparator<Feature> {
     return a < b ? -1
          : a > b ? 1
          : 0;
+  }
+}
+  static public void main(String args[]) {
+    PApplet.main(new String[] { "--bgcolor=#666666", "--stop-color=#cccccc", "Axial" });
   }
 }
