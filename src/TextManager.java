@@ -8,6 +8,10 @@ public class TextManager {
     double decayFactor = .985;
     List<TextFeature> texts;
 
+    public TextManager() {
+        texts = new ArrayList<TextFeature>();
+    }
+
     public void addText(TextFeature newTF) {
         texts.add(newTF);
     }
