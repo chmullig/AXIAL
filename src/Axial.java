@@ -50,6 +50,7 @@ public class Axial extends PApplet {
     int WIDTH = 1024;
     int HEIGHT = 768;
     AxialMarkerManager mm;
+    TextManager tm;
 
     boolean sketchFullScreen() {
         return false;
@@ -76,17 +77,25 @@ public class Axial extends PApplet {
         MarkerFactory mf = new MarkerFactory();
         mf.setPointClass(FoursquareMarker.class);
         checkinMarkers = mf.createMarkers(checkins);
+        TextManager tm = new TextManager();
 
         for(int i = 0; i < checkins.size(); i++) {
             ((FoursquareMarker)(checkinMarkers.get(i))).setTimestamp((Integer)(checkins.get(i).getProperty("timestamp")));
+            if (!checkins.get(i).getStringProperty("text").equals("")) {
+                TextFeature tf = new TextFeature(checkins.get(i).getStringProperty("text"));
+                tm.addText(tf);
+            }
         }
         mm = new AxialMarkerManager();
         mm.addMarkers(checkinMarkers);
         map.addMarkerManager(mm);
     }
 
+
     public void draw() {
         currentTime += frameLength;
+        System.out.println(new Date((long)currentTime*1000).toString());
+
         mm.setTimestamp(currentTime);
         map.draw();
         text(new Date((long)currentTime*1000).toString(), 5, HEIGHT-5);

@@ -1,5 +1,4 @@
 import processing.opengl.*;
-import java.util.Date;
 
 import codeanticode.glgraphics.*;
 
@@ -40,7 +39,6 @@ public class AxialMarkerManager extends MarkerManager<Marker> {
         // REVISIT Why twice? Here and in drawOuter()?
         // To allow both; markers either implement one or the other.
         // Off-map cut-off depends on it.
-        System.out.println(new Date((long)currentTimestamp*1000).toString());
 
         for (Marker marker : markers) {
             if (((FoursquareMarker)(marker)).getTimestamp() <= currentTimestamp) {

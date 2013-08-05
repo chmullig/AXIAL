@@ -6,7 +6,9 @@ NATIVE_OPENGL = /Applications/Processing.app/Contents/Resources/Java/modes/java/
 SRC_FILES = \
 	src/Axial.java \
 	src/AxialMarkerManager.java \
-	src/FoursquareMarker.java
+	src/FoursquareMarker.java \
+	src/TextFeature.java \
+	src/TextManager.java
 
 test: build/Axial.jar
 	java -cp $(JARS):src:library -Djava.library.path=$(NATIVE_OPENGL) Axial	
@@ -22,18 +24,9 @@ data/foursquare.geojson:
 
 frames/frame-000010.tif: build/Axial.jar
 	java -cp $(JARS):src:library -Djava.library.path=$(NATIVE_OPENGL) Axial
-	rm frames/frame-000001.tif
-	rm frames/frame-000002.tif
-	rm frames/frame-000003.tif
-	rm frames/frame-000004.tif
-	rm frames/frame-000005.tif
-	rm frames/frame-000006.tif
-	rm frames/frame-000007.tif
-	rm frames/frame-000008.tif
-	rm frames/frame-000009.tif
 
 video.mp4: frames/frame-000010.tif
-	ffmpeg -f image2 -r 25 -i shitty_demo/frames/frame-%06d.tif -r 25 -i ~/Dropbox/05\ -\ Empire\ State\ Of\ Mind\ \[Jay-Z\ +\ Alicia\ Keys\]\ \(Explicit\).mp3  -c:v libx264 -pix_fmt yuv420p -threads 4 -shortest video.mp4
+	ffmpeg -f image2 -r 25 -i frames/frame-%06d.tif -r 25 -i ~/Dropbox/05\ -\ Empire\ State\ Of\ Mind\ \[Jay-Z\ +\ Alicia\ Keys\]\ \(Explicit\).mp3  -c:v libx264 -pix_fmt yuv420p -threads 4 -shortest -y video.mp4
 
 clean:
 	rm -f src/*.class
