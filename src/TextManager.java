@@ -5,10 +5,12 @@ import java.util.*;
 
 public class TextManager {
     int currentTimestamp;
-    double decayFactor = .985;
+    double decayFactor = .98;
     List<TextFeature> texts;
+    PGraphics g;
 
-    public TextManager() {
+    public TextManager(PGraphics newG) {
+        g = newG;
         texts = new ArrayList<TextFeature>();
     }
 
@@ -34,7 +36,13 @@ public class TextManager {
 
 
     public void draw() {
-        System.out.println(texts.get(0));
+        for (TextFeature t : texts) {
+            if (t.getTimestamp() <= currentTimestamp) {
+                int oldAlpha = t.getAlpha();
+                t.setAlpha((int)(oldAlpha*decayFactor));
+                t.draw(g);
+            }
+        }
     }
 
 

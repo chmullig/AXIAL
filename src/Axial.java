@@ -49,6 +49,7 @@ public class Axial extends PApplet {
     int lastPos = 0;
     int WIDTH = 1024;
     int HEIGHT = 768;
+    static boolean saveFrames = true;
     AxialMarkerManager mm;
     TextManager tm;
 
@@ -77,12 +78,15 @@ public class Axial extends PApplet {
         MarkerFactory mf = new MarkerFactory();
         mf.setPointClass(FoursquareMarker.class);
         checkinMarkers = mf.createMarkers(checkins);
-        TextManager tm = new TextManager();
+
+        tm = new TextManager(this.g);
 
         for(int i = 0; i < checkins.size(); i++) {
             ((FoursquareMarker)(checkinMarkers.get(i))).setTimestamp((Integer)(checkins.get(i).getProperty("timestamp")));
             if (!checkins.get(i).getStringProperty("text").equals("")) {
                 TextFeature tf = new TextFeature(checkins.get(i).getStringProperty("text"));
+                tf.setTimestamp((Integer)(checkins.get(i).getProperty("timestamp")));
+                tf.setScore(0);
                 tm.addText(tf);
             }
         }
@@ -98,9 +102,13 @@ public class Axial extends PApplet {
 
         mm.setTimestamp(currentTime);
         map.draw();
+        tm.setTimestamp(currentTime);
+        tm.draw();
         text(new Date((long)currentTime*1000).toString(), 5, HEIGHT-5);
 
-        saveFrame("frames/frame-######.tif");
+        if (saveFrames) {
+            saveFrame("frames/frame-######.tif");
+        }
         if (currentTime > endTime) {
             exit();
         }
@@ -133,6 +141,12 @@ public class Axial extends PApplet {
         }
     }
     static public void main(String args[]) {
+        for (int i = 0; i < args.length; i++) {
+            if (args[i].equals("--test")) {
+                saveFrames = false;
+            }
+        }
+
         PApplet.main(new String[] { "--bgcolor=#666666", "--stop-color=#cccccc", "Axial" });
     }
 }
