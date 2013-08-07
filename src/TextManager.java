@@ -5,26 +5,28 @@ import java.util.*;
 
 public class TextManager {
     int currentTimestamp;
-    double decayFactor = .98;
+    double decayFactor = .995;
     List<TextFeature> texts;
-    List<Integer> xPositions;
-    List<Integer> yPositions;
-    int lastUsed = 0;
+    int xPositions[];
+    int yPositions[];
+    Deque<TextFeature> slots;
+    Deque<Position> positions;
+    int lastSlotUsed = 0;
+    int lastChecked = 0;
+    int numSlots = 10;
     PGraphics g;
 
     public TextManager(PGraphics newG) {
         g = newG;
         texts = new ArrayList<TextFeature>();
-        xPositions = new ArrayList<Integer>();
-        xPositions.add(18);
-        xPositions.add(18*2+5);
-        xPositions.add(18*3+5);
-        xPositions.add(18*4+5);
-        yPositions = new ArrayList<Integer>();
-        yPositions.add(5);
-        yPositions.add(5);
-        yPositions.add(5);
-        yPositions.add(5);
+        slots = new ArrayDeque<TextFeature>();
+        positions = new ArrayDeque<Position>();
+        xPositions = new int[numSlots];
+        yPositions = new int[numSlots];
+        for (int i = 0; i < numSlots; i++) {
+            Position p = new Position(5, 18*(i+1));
+            positions.add(p);
+        }
     }
 
     public void addText(TextFeature newTF) {
@@ -49,12 +51,27 @@ public class TextManager {
 
 
     public void draw() {
-        for (TextFeature t : texts) {
+
+        for (int i = lastChecked; i < texts.size(); i++) {
+            TextFeature t = texts.get(i);
             if (t.getTimestamp() <= currentTimestamp) {
-                int oldAlpha = t.getAlpha();
-                t.setAlpha((int)(oldAlpha*decayFactor));
-                t.draw(g, 0, 0);
+                if (slots.size() == numSlots) {
+                    TextFeature dead = slots.removeFirst();
+                    t.setPosition(dead.getPosition());
+                } else {
+                    t.setPosition(positions.remove());
+                    System.out.println("Claiming a fresh spot");
+                }
+                slots.addLast(t);
+                lastChecked = i+1;
             }
+        }
+
+        for (Iterator<TextFeature> itr = slots.iterator(); itr.hasNext(); ) {
+            TextFeature t = itr.next();
+            int oldAlpha = t.getAlpha();
+            t.setAlpha((int)(oldAlpha*decayFactor));
+            t.draw(g);
         }
     }
 

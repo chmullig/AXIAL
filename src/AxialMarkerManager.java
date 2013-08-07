@@ -36,15 +36,13 @@ public class AxialMarkerManager extends MarkerManager<Marker> {
 
 
     public void draw() {
-        // REVISIT Why twice? Here and in drawOuter()?
-        // To allow both; markers either implement one or the other.
-        // Off-map cut-off depends on it.
-
         for (Marker marker : markers) {
             if (((FoursquareMarker)(marker)).getTimestamp() <= currentTimestamp) {
                 int oldAlpha = ((FoursquareMarker)(marker)).getAlpha();
-                ((FoursquareMarker)(marker)).setAlpha((int)(oldAlpha*decayFactor));
-                marker.draw(map);
+                if (oldAlpha > 0) {
+                    ((FoursquareMarker)(marker)).setAlpha((int)(oldAlpha*decayFactor));
+                    marker.draw(map);
+                }
             }
         }
     }

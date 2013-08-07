@@ -35,8 +35,9 @@ import java.util.regex.*;
 
 public class TextFeature {
     private int timestamp;
-    private int alphaLevel = 255;
+    private int alphaLevel = 256;
     private int score = 0;
+    private Position p;
     String message;
 
     public TextFeature(String s) {
@@ -74,11 +75,19 @@ public class TextFeature {
         return score;
     }
 
-    public void draw(PGraphics pg, int x, int y) {
+    public void setPosition(Position p) {
+        this.p = p;
+    }
+
+    public Position getPosition() {
+        return p;
+    }
+
+    public void draw(PGraphics pg) {
         pg.pushStyle();
         pg.noStroke();
-        pg.fill(x, y, 0, alphaLevel);
-        pg.text(message, 20, 20);
+        pg.fill(0, 150, 187, alphaLevel);
+        pg.text(message, p.x, p.y);
         pg.popStyle();
     }
 }

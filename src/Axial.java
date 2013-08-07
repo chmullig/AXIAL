@@ -84,7 +84,7 @@ public class Axial extends PApplet {
         for(int i = 0; i < checkins.size(); i++) {
             ((FoursquareMarker)(checkinMarkers.get(i))).setTimestamp((Integer)(checkins.get(i).getProperty("timestamp")));
             if (!checkins.get(i).getStringProperty("text").equals("")) {
-                TextFeature tf = new TextFeature(checkins.get(i).getStringProperty("text"));
+                TextFeature tf = new TextFeature(checkins.get(i).getStringProperty("text") + " @ " + checkins.get(i).getStringProperty("venue"));
                 tf.setTimestamp((Integer)(checkins.get(i).getProperty("timestamp")));
                 tf.setScore(0);
                 tm.addText(tf);
@@ -104,7 +104,13 @@ public class Axial extends PApplet {
         map.draw();
         tm.setTimestamp(currentTime);
         tm.draw();
-        text(new Date((long)currentTime*1000).toString(), 5, HEIGHT-5);
+
+        pushStyle();
+        textAlign(RIGHT);
+        Date dt = new Date((long)currentTime*1000);
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE, MMM d, a");
+        text(formatter.format(dt), WIDTH-5, 18);
+        popStyle();
 
         if (saveFrames) {
             saveFrame("frames/frame-######.tif");
