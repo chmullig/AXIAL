@@ -133,11 +133,22 @@ public class Axial extends PApplet {
         im.setTimestamp(currentTime);
         im.draw();
 
+
+
+        //Clock
         pushStyle();
         textAlign(RIGHT);
         Date dt = new Date((long)currentTime*1000);
         SimpleDateFormat formatter = new SimpleDateFormat("EEE, MMM d, a");
-        text(formatter.format(dt), WIDTH-5, 18);
+        String formattedDate = formatter.format(dt);
+            //Background for clock
+            pushStyle();
+            stroke(255, 0);
+            fill(255, 255, 255, 155);
+            int clockSize = (int)(textWidth(formattedDate));
+            rect(WIDTH-9-clockSize, 2, WIDTH-2, 22);
+            popStyle();
+        text(formattedDate, WIDTH-5, 18);
         popStyle();
 
         if (saveFrames) {

@@ -8,7 +8,6 @@ public abstract class Featurable {
     protected int alphaLevel = 256;
     protected int score = 0;
     protected Position p;
-    protected int alignment = PConstants.LEFT;
 
     public void setTimestamp(int timestamp) {
         this.timestamp = timestamp;

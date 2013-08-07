@@ -66,9 +66,13 @@ public class ImageFeature extends Featurable {
         pg.pushStyle();
         pg.tint(255, alphaLevel);
         img.resize(0, height);
+        pg.stroke(255, 0);
+        pg.fill(255, 255, 255, (int)(alphaLevel*.8));
         if (p.alignment == PConstants.LEFT) {
+            pg.rect(p.x-3, p.y-3, img.width+6, img.height+6);
             pg.image(img, p.x, p.y);
         } else {
+            pg.rect(p.x-img.width-3, p.y-3, p.x+6, img.height+6);
             pg.image(img, p.x-img.width, p.y);
         }
         pg.popStyle();

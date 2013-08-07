@@ -5,7 +5,7 @@ import java.util.*;
 
 public class FeatureManager {
     int currentTimestamp;
-    double decayFactor = .999;
+    double decayFactor = .9999;
     List<Featurable> features;
     int xPositions[];
     int yPositions[];
