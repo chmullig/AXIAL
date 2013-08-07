@@ -5,7 +5,7 @@ import java.util.*;
 
 public class TextManager {
     int currentTimestamp;
-    double decayFactor = .995;
+    double decayFactor = .999;
     List<TextFeature> texts;
     int xPositions[];
     int yPositions[];
@@ -58,7 +58,7 @@ public class TextManager {
                 if (slots.size() == numSlots) {
                     for (int j = 0; j < slots.size(); j++) {
                         TextFeature choppingBlock = slots.get(j);
-                        if (t.getScore()*t.getAlpha() > 3*choppingBlock.getScore()*choppingBlock.getAlpha()) {
+                        if (t.getScore()*t.getAlpha() > 1+3*choppingBlock.getScore()*choppingBlock.getAlpha()) {
                             t.setPosition(choppingBlock.getPosition());
                             slots.set(j, t);
                             break;

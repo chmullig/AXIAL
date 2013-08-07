@@ -12,7 +12,7 @@ import de.fhpotsdam.utils.*;
 
 public class AxialMarkerManager extends MarkerManager<Marker> {
     int currentTimestamp;
-    double decayFactor = .985;
+    double decayFactor = .995;
 
     public AxialMarkerManager() {
         super();

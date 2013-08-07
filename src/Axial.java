@@ -45,7 +45,7 @@ public class Axial extends PApplet {
     int initialTime = 1370040000;
     int endTime = 1376107200;
     int currentTime = initialTime;
-    int frameLength = 60*30;
+    int frameLength = 60*15;
     int lastPos = 0;
     int WIDTH = 1024;
     int HEIGHT = 768;
