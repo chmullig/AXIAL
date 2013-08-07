@@ -74,10 +74,10 @@ public class TextFeature {
         return score;
     }
 
-    public void draw(PGraphics pg) {
+    public void draw(PGraphics pg, int x, int y) {
         pg.pushStyle();
         pg.noStroke();
-        pg.fill(0, 0, 0, alphaLevel);
+        pg.fill(x, y, 0, alphaLevel);
         pg.text(message, 20, 20);
         pg.popStyle();
     }

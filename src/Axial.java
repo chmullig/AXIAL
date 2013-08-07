@@ -62,7 +62,7 @@ public class Axial extends PApplet {
 
         provider1 = new OpenStreetMap.OpenStreetMapProvider();
         provider2 = new Microsoft.AerialProvider();
-        provider3 = new OpenStreetMap.CloudmadeProvider(CMAPIKey, 23058);
+        provider3 = new OpenStreetMap.CloudmadeProvider(CMAPIKey, 104472);
         map = new UnfoldingMap(this, provider3);
         MapUtils.createDefaultEventDispatcher(this, map);
         map.zoomToLevel(13);

@@ -37,10 +37,16 @@ public class FoursquareMarker extends SimplePointMarker {
     }
 
     public void draw(PGraphics pg, float x, float y) {
+        float offset1 = (float)(-0.0005+(Math.random()*(.001)));
+        float offset2 = (float)(-0.0005+(Math.random()*(.001)));
+//background-color: rgb(118, 204, 30);246, 250, 136);
+
         pg.pushStyle();
         pg.noStroke();
-        pg.fill(200, 200, 0, alphaLevel);
-        pg.ellipse(x, y, 7, 7);
+        pg.fill(236, 100, 90, alphaLevel/3);
+        pg.ellipse(x+offset1, y+offset2, 10, 10);
+        pg.fill(236, 100, 90, alphaLevel*2);
+        pg.ellipse(x+offset1, y+offset2, 3, 3);
         pg.popStyle();
     }
 }
