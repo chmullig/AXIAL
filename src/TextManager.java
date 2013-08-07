@@ -9,22 +9,22 @@ public class TextManager {
     List<TextFeature> texts;
     int xPositions[];
     int yPositions[];
-    Deque<TextFeature> slots;
+    ArrayList<TextFeature> slots;
     Deque<Position> positions;
     int lastSlotUsed = 0;
     int lastChecked = 0;
-    int numSlots = 10;
+    int numSlots = 5;
     PGraphics g;
 
     public TextManager(PGraphics newG) {
         g = newG;
         texts = new ArrayList<TextFeature>();
-        slots = new ArrayDeque<TextFeature>();
+        slots = new ArrayList<TextFeature>();
         positions = new ArrayDeque<Position>();
         xPositions = new int[numSlots];
         yPositions = new int[numSlots];
         for (int i = 0; i < numSlots; i++) {
-            Position p = new Position(5, 18*(i+1));
+            Position p = new Position(5, 20*(i+1));
             positions.add(p);
         }
     }
@@ -56,13 +56,18 @@ public class TextManager {
             TextFeature t = texts.get(i);
             if (t.getTimestamp() <= currentTimestamp) {
                 if (slots.size() == numSlots) {
-                    TextFeature dead = slots.removeFirst();
-                    t.setPosition(dead.getPosition());
+                    for (int j = 0; j < slots.size(); j++) {
+                        TextFeature choppingBlock = slots.get(j);
+                        if (t.getScore()*t.getAlpha() > 3*choppingBlock.getScore()*choppingBlock.getAlpha()) {
+                            t.setPosition(choppingBlock.getPosition());
+                            slots.set(j, t);
+                            break;
+                        }
+                    }
                 } else {
                     t.setPosition(positions.remove());
-                    System.out.println("Claiming a fresh spot");
+                    slots.add(t);
                 }
-                slots.addLast(t);
                 lastChecked = i+1;
             }
         }

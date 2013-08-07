@@ -61,12 +61,13 @@ public class Axial extends PApplet {
         size(WIDTH, HEIGHT, GLConstants.GLGRAPHICS);
 
         provider1 = new OpenStreetMap.OpenStreetMapProvider();
-        provider2 = new Microsoft.AerialProvider();
-        provider3 = new OpenStreetMap.CloudmadeProvider(CMAPIKey, 104472);
+        provider2 = new Microsoft.AerialProvider();               
+        provider3 = new OpenStreetMap.CloudmadeProvider(CMAPIKey, 104478);
         map = new UnfoldingMap(this, provider3);
         MapUtils.createDefaultEventDispatcher(this, map);
         map.zoomToLevel(13);
-        map.panTo(new Location(40.735f, -73.99f));
+        Location palladium = new Location(40.733311f, -73.988156f);
+        map.panTo(palladium);
 
         fill(0);  // Black
         textFont(createFont("SansSerif",18));
@@ -81,12 +82,19 @@ public class Axial extends PApplet {
 
         tm = new TextManager(this.g);
 
+
+
         for(int i = 0; i < checkins.size(); i++) {
-            ((FoursquareMarker)(checkinMarkers.get(i))).setTimestamp((Integer)(checkins.get(i).getProperty("timestamp")));
-            if (!checkins.get(i).getStringProperty("text").equals("")) {
-                TextFeature tf = new TextFeature(checkins.get(i).getStringProperty("text") + " @ " + checkins.get(i).getStringProperty("venue"));
-                tf.setTimestamp((Integer)(checkins.get(i).getProperty("timestamp")));
-                tf.setScore(0);
+            FoursquareMarker m = (FoursquareMarker)(checkinMarkers.get(i));
+            Feature c = checkins.get(i);
+            m.setTimestamp((Integer)(c.getProperty("timestamp")));
+            if (!c.getStringProperty("text").equals("") && GeoUtils.getDistance(palladium, ((PointFeature)c).getLocation()) < 10) {
+                TextFeature tf = new TextFeature(c.getStringProperty("text") + " @ " + c.getStringProperty("venue"));
+                tf.setTimestamp((Integer)(c.getProperty("timestamp")));
+                int score = 0;
+                score += (tf.getString().toLowerCase().contains("hackny")) ? 3 : 0;
+                score += (Integer)(c.getProperty("likes"));
+                tf.setScore(score);
                 tm.addText(tf);
             }
         }
