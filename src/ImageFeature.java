@@ -33,26 +33,26 @@ import java.util.*;
 import java.util.zip.*;
 import java.util.regex.*;
 
-public class TextFeature extends Featurable {
-    String message;
+public class ImageFeature extends Featurable {
+    String url;
 
-    public TextFeature(String s) {
-        message = s;
+    public ImageFeature(String s) {
+        url = s;
     }
 
-    public void setString(String s) {
-        message = s;
+    public void setURL(String s) {
+        url = s;
     }
 
-    public String getString() {
-        return message;
+    public String getURL() {
+        return url;
     }
 
     public void draw(PGraphics pg) {
         pg.pushStyle();
         pg.noStroke();
         pg.fill(0, 150, 187, alphaLevel);
-        pg.text(message, p.x, p.y);
+        pg.text(url, p.x, p.y);
         pg.popStyle();
     }
 }

@@ -3,23 +3,24 @@ import processing.core.*;
 import codeanticode.glgraphics.*;
 import java.util.*;
 
-public class TextManager {
+public class FeatureManager {
     int currentTimestamp;
     double decayFactor = .999;
-    List<TextFeature> texts;
+    List<Featurable> features;
     int xPositions[];
     int yPositions[];
-    ArrayList<TextFeature> slots;
+    ArrayList<Featurable> slots;
     Deque<Position> positions;
     int lastSlotUsed = 0;
     int lastChecked = 0;
     int numSlots = 5;
     PGraphics g;
 
-    public TextManager(PGraphics newG) {
+    public FeatureManager(PGraphics newG) {
         g = newG;
-        texts = new ArrayList<TextFeature>();
-        slots = new ArrayList<TextFeature>();
+        features = new ArrayList<Featurable>();
+
+        slots = new ArrayList<Featurable>();
         positions = new ArrayDeque<Position>();
         xPositions = new int[numSlots];
         yPositions = new int[numSlots];
@@ -29,8 +30,8 @@ public class TextManager {
         }
     }
 
-    public void addText(TextFeature newTF) {
-        texts.add(newTF);
+    public void addFeature(Featurable newF) {
+        features.add(newF);
     }
 
     public void setTimestamp(int newTimestamp) {
@@ -52,31 +53,31 @@ public class TextManager {
 
     public void draw() {
 
-        for (int i = lastChecked; i < texts.size(); i++) {
-            TextFeature t = texts.get(i);
-            if (t.getTimestamp() <= currentTimestamp) {
+        for (int i = lastChecked; i < features.size(); i++) {
+            Featurable f = features.get(i);
+            if (f.getTimestamp() <= currentTimestamp) {
                 if (slots.size() == numSlots) {
                     for (int j = 0; j < slots.size(); j++) {
-                        TextFeature choppingBlock = slots.get(j);
-                        if (t.getScore()*t.getAlpha() > 1+3*choppingBlock.getScore()*choppingBlock.getAlpha()) {
-                            t.setPosition(choppingBlock.getPosition());
-                            slots.set(j, t);
+                        Featurable choppingBlock = slots.get(j);
+                        if (f.getScore()*f.getAlpha() > 1+3*choppingBlock.getScore()*choppingBlock.getAlpha()) {
+                            f.setPosition(choppingBlock.getPosition());
+                            slots.set(j, f);
                             break;
                         }
                     }
                 } else {
-                    t.setPosition(positions.remove());
-                    slots.add(t);
+                    f.setPosition(positions.remove());
+                    slots.add(f);
                 }
                 lastChecked = i+1;
             }
         }
 
-        for (Iterator<TextFeature> itr = slots.iterator(); itr.hasNext(); ) {
-            TextFeature t = itr.next();
-            int oldAlpha = t.getAlpha();
-            t.setAlpha((int)(oldAlpha*decayFactor));
-            t.draw(g);
+        for (Iterator<Featurable> itr = slots.iterator(); itr.hasNext(); ) {
+            Featurable f = itr.next();
+            int oldAlpha = f.getAlpha();
+            f.setAlpha((int)(oldAlpha*decayFactor));
+            f.draw(g);
         }
     }
 

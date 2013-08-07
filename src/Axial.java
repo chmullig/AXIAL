@@ -51,7 +51,7 @@ public class Axial extends PApplet {
     int HEIGHT = 768;
     static boolean saveFrames = true;
     AxialMarkerManager mm;
-    TextManager tm;
+    FeatureManager fm;
 
     boolean sketchFullScreen() {
         return false;
@@ -80,9 +80,7 @@ public class Axial extends PApplet {
         mf.setPointClass(FoursquareMarker.class);
         checkinMarkers = mf.createMarkers(checkins);
 
-        tm = new TextManager(this.g);
-
-
+        fm = new FeatureManager(this.g);
 
         for(int i = 0; i < checkins.size(); i++) {
             FoursquareMarker m = (FoursquareMarker)(checkinMarkers.get(i));
@@ -95,7 +93,7 @@ public class Axial extends PApplet {
                 score += (tf.getString().toLowerCase().contains("hackny")) ? 3 : 0;
                 score += (Integer)(c.getProperty("likes"));
                 tf.setScore(score);
-                tm.addText(tf);
+                fm.addFeature(tf);
             }
         }
         mm = new AxialMarkerManager();
@@ -110,8 +108,8 @@ public class Axial extends PApplet {
 
         mm.setTimestamp(currentTime);
         map.draw();
-        tm.setTimestamp(currentTime);
-        tm.draw();
+        fm.setTimestamp(currentTime);
+        fm.draw();
 
         pushStyle();
         textAlign(RIGHT);
