@@ -40,7 +40,6 @@ public class FoursquareMarker extends SimplePointMarker {
     public void draw(PGraphics pg, float x, float y) {
         float offset1 = (float)(-0.0005+(Math.random()*(.001)));
         float offset2 = (float)(-0.0005+(Math.random()*(.001)));
-//background-color: rgb(118, 204, 30);246, 250, 136);
 
         pg.pushStyle();
         pg.noStroke();

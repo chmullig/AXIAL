@@ -10,24 +10,48 @@ public class FeatureManager {
     int xPositions[];
     int yPositions[];
     ArrayList<Featurable> slots;
-    Deque<Position> positions;
+    ArrayList<Position> positions;
     int lastSlotUsed = 0;
     int lastChecked = 0;
     int numSlots = 5;
-    PGraphics g;
+    PApplet pa;
 
-    public FeatureManager(PGraphics newG) {
-        g = newG;
+    public FeatureManager(PApplet pa) {
+        this.pa = pa;
         features = new ArrayList<Featurable>();
 
         slots = new ArrayList<Featurable>();
-        positions = new ArrayDeque<Position>();
+        positions = new ArrayList<Position>();
         xPositions = new int[numSlots];
         yPositions = new int[numSlots];
         for (int i = 0; i < numSlots; i++) {
             Position p = new Position(5, 20*(i+1));
             positions.add(p);
         }
+    }
+
+    public void setNumSlots(int numSlots) {
+        this.numSlots = numSlots;
+        xPositions = new int[numSlots];
+        yPositions = new int[numSlots];
+        slots = new ArrayList<Featurable>();
+        positions = new ArrayList<Position>();
+    }
+
+    public int getNumSlots() {
+        return numSlots;
+    }
+
+    public void addPosition(Position p) {
+        positions.add(p);
+    }
+
+    public void setPosition(int slot_id, Position p) {
+        positions.set(slot_id, p);
+    }
+
+    public Position getPosition(int slot_id) {
+        return positions.get(slot_id);
     }
 
     public void addFeature(Featurable newF) {
@@ -66,7 +90,7 @@ public class FeatureManager {
                         }
                     }
                 } else {
-                    f.setPosition(positions.remove());
+                    f.setPosition(positions.remove(0));
                     slots.add(f);
                 }
                 lastChecked = i+1;
@@ -77,7 +101,7 @@ public class FeatureManager {
             Featurable f = itr.next();
             int oldAlpha = f.getAlpha();
             f.setAlpha((int)(oldAlpha*decayFactor));
-            f.draw(g);
+            f.draw(pa.g);
         }
     }
 

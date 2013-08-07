@@ -35,24 +35,42 @@ import java.util.regex.*;
 
 public class ImageFeature extends Featurable {
     String url;
+    PImage img;
+    PApplet pa;
+    int height;
 
-    public ImageFeature(String s) {
+    public ImageFeature(PApplet pa, String s) {
         url = s;
+        this.pa = pa;
+        img = pa.loadImage(url);
     }
 
     public void setURL(String s) {
         url = s;
+        img = pa.loadImage(url);
     }
 
     public String getURL() {
         return url;
     }
 
+    public PImage getImage() {
+        return img;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
     public void draw(PGraphics pg) {
         pg.pushStyle();
-        pg.noStroke();
-        pg.fill(0, 150, 187, alphaLevel);
-        pg.text(url, p.x, p.y);
+        pg.tint(255, alphaLevel);
+        img.resize(0, height);
+        if (p.alignment == PConstants.LEFT) {
+            pg.image(img, p.x, p.y);
+        } else {
+            pg.image(img, p.x-img.width, p.y);
+        }
         pg.popStyle();
     }
 }

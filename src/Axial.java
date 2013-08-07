@@ -49,9 +49,12 @@ public class Axial extends PApplet {
     int lastPos = 0;
     int WIDTH = 1024;
     int HEIGHT = 768;
+    int imageHeight = 200;
+    int imagePadding = 15;
     static boolean saveFrames = true;
     AxialMarkerManager mm;
     FeatureManager fm;
+    FeatureManager im;
 
     boolean sketchFullScreen() {
         return false;
@@ -80,7 +83,16 @@ public class Axial extends PApplet {
         mf.setPointClass(FoursquareMarker.class);
         checkinMarkers = mf.createMarkers(checkins);
 
-        fm = new FeatureManager(this.g);
+        fm = new FeatureManager(this);
+        im = new FeatureManager(this);
+        im.setNumSlots(6);
+        int initialImage = fm.getPosition(fm.getNumSlots()-1).y+30;
+        im.addPosition(new Position(5, initialImage, LEFT));
+        im.addPosition(new Position(5, initialImage+imageHeight+imagePadding, LEFT));
+        im.addPosition(new Position(5, initialImage+2*(imageHeight+imagePadding), LEFT));
+        im.addPosition(new Position(WIDTH-5, initialImage, RIGHT));
+        im.addPosition(new Position(WIDTH-5, initialImage+imageHeight+imagePadding, RIGHT));
+        im.addPosition(new Position(WIDTH-5, initialImage+2*(imageHeight+imagePadding), RIGHT));
 
         for(int i = 0; i < checkins.size(); i++) {
             FoursquareMarker m = (FoursquareMarker)(checkinMarkers.get(i));
@@ -94,6 +106,14 @@ public class Axial extends PApplet {
                 score += (Integer)(c.getProperty("likes"));
                 tf.setScore(score);
                 fm.addFeature(tf);
+                //Add the image if it's here
+                if (!c.getStringProperty("photo").equals("")) {
+                    ImageFeature imgFeature = new ImageFeature(this, c.getStringProperty("photo"));
+                    imgFeature.setTimestamp((Integer)(c.getProperty("timestamp")));
+                    imgFeature.setScore(score);
+                    imgFeature.setHeight(imageHeight);
+                    im.addFeature(imgFeature);
+                }
             }
         }
         mm = new AxialMarkerManager();
@@ -110,6 +130,8 @@ public class Axial extends PApplet {
         map.draw();
         fm.setTimestamp(currentTime);
         fm.draw();
+        im.setTimestamp(currentTime);
+        im.draw();
 
         pushStyle();
         textAlign(RIGHT);
