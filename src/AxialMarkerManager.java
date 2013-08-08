@@ -43,11 +43,13 @@ public class AxialMarkerManager extends MarkerManager<Marker> {
             FoursquareUserMarker user = e.nextElement();
             List<Position> positions = userPositions.get(user);
             for (Position p : positions) {
-                if (p.timestamp <= currentTimestamp && p.timestamp > user.getTarget().timestamp) {
+                if (p.timestamp <= currentTimestamp) {
                     user.setTarget(p);
                 }
             }
-            user.draw(map);
+            if (user.getTarget() != null) {
+                user.draw(map);
+            }
         }
     }
 
