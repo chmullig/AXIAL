@@ -103,7 +103,7 @@ public class Axial extends PApplet {
             Position p = new Position((Integer)(c.getProperty("lat")), (Integer)(c.getProperty("lng")));
             p.setTimestamp((Integer)(c.getProperty("timestamp")));
             String name = c.getStringProperty("name");
-            if (users.containsKey(c.getStringProperty("name")) {
+            if (users.containsKey(c.getStringProperty("name"))) {
                 users.get(name).addPosition(p);
             } else {
                 FoursquareUserMarker user = new FoursquareUserMarker();
@@ -111,8 +111,6 @@ public class Axial extends PApplet {
                 users.put(name, user);
             }
 
-
-            m.setTimestamp((Integer)(c.getProperty("timestamp")));
             if (!c.getStringProperty("text").equals("") && GeoUtils.getDistance(palladium, ((PointFeature)c).getLocation()) < 10) {
                 TextFeature tf = new TextFeature(c.getStringProperty("text") + " @ " + c.getStringProperty("venue"));
                 tf.setTimestamp((Integer)(c.getProperty("timestamp")));
