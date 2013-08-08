@@ -6,7 +6,7 @@ NATIVE_OPENGL = libNative/macosx
 SRC_FILES = \
 	src/Axial.java \
 	src/AxialMarkerManager.java \
-	src/FoursquareMarker.java \
+	src/FoursquareUserMarker.java \
 	src/TextFeature.java \
 	src/FeatureManager.java \
 	src/Position.java \

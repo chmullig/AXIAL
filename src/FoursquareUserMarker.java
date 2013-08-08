@@ -16,9 +16,12 @@ import de.fhpotsdam.utils.*;
 public class FoursquareUserMarker extends SimplePointMarker {
     private int timestamp;
     private int alphaLevel = 255;
+    private Position current;
+    private Position target;
 
     public FoursquareUserMarker(Location location) {
         super(location);
+
     }
 
     public void setTimestamp(int newTimestamp) {
@@ -36,16 +39,35 @@ public class FoursquareUserMarker extends SimplePointMarker {
         return alphaLevel;
     }
 
-    public void draw(PGraphics pg, float x, float y) {
-        float offset1 = (float)(-0.0005+(Math.random()*(.001)));
-        float offset2 = (float)(-0.0005+(Math.random()*(.001)));
+    public void setPosition(Position current) {
+        this.current = current;
+    }
+
+    public Position getPosition() {
+        return current;
+    }
+
+    public void setTarget(Position target) {
+        this.target = target;
+    }
+
+    public Position getTarget() {
+        return target;
+    }
+
+
+    public void draw(PGraphics pg) {
+        //calculate where the new x and new y should be
+
+        //current.x, current.y
+        //target.x and target.y
 
         pg.pushStyle();
         pg.noStroke();
         pg.fill(236, 100, 90, alphaLevel/3);
-        pg.ellipse(x+offset1, y+offset2, 10, 10);
+        pg.ellipse(current.x, current.y, 10, 10);
         pg.fill(236, 100, 90, alphaLevel*2);
-        pg.ellipse(x+offset1, y+offset2, 3, 3);
+        pg.ellipse(current.x, current.y, 3, 3);
         pg.popStyle();
     }
 }
