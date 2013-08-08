@@ -17,7 +17,7 @@ public class FoursquareUserMarker extends SimplePointMarker {
     int timestamp;
     int alphaLevel = 255;
     Location target;
-    float easing = 0.15f;
+    float easing = 0.00015f;
 
     public FoursquareUserMarker() {
         super();
@@ -68,6 +68,7 @@ public class FoursquareUserMarker extends SimplePointMarker {
         if (Math.abs(diff.y) > 1) {
              location.y += diff.y * easing;
         }
+        System.out.println("Position: " + location);
     }
 
 
