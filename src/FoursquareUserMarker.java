@@ -18,6 +18,7 @@ public class FoursquareUserMarker extends SimplePointMarker {
     int alphaLevel = 255;
     Position current;
     Position target;
+    float easing = 0.15;
 
     public FoursquareUserMarker() {
         super();
@@ -64,6 +65,16 @@ public class FoursquareUserMarker extends SimplePointMarker {
 
         //current.x, current.y
         //target.x and target.y
+
+        Position diff = new Position(current.x - target.x, current.y - target.y);
+
+        if (abs(diff.x) > 1) {
+             current.x += diff.x * easing;
+        }
+
+        if (abs(diff.y) > 1) {
+             current.y += diff.y * easing;
+        }
 
         pg.pushStyle();
         pg.noStroke();
