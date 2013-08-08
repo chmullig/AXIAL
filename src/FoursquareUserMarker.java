@@ -13,12 +13,11 @@ import de.fhpotsdam.unfolding.core.*;
 import de.fhpotsdam.unfolding.geo.*;
 import de.fhpotsdam.utils.*;
 
-
-public class FoursquareMarker extends SimplePointMarker {
+public class FoursquareUserMarker extends SimplePointMarker {
     private int timestamp;
     private int alphaLevel = 255;
 
-    public FoursquareMarker(Location location) {
+    public FoursquareUserMarker(Location location) {
         super(location);
     }
 
