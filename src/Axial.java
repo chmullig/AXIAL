@@ -76,12 +76,6 @@ public class Axial extends PApplet {
         textFont(createFont("SansSerif",18));
         textAlign(LEFT);
 
-        //Load Foursquare checkins
-        checkins = GeoJSONReader.loadData(this, "foursquare.geojson");
-        Collections.sort(checkins, new FeatureByTimestampComparer());
-        MarkerFactory mf = new MarkerFactory();
-        mf.setPointClass(FoursquareMarker.class);
-        checkinMarkers = mf.createMarkers(checkins);
 
         fm = new FeatureManager(this);
         im = new FeatureManager(this);
@@ -94,9 +88,30 @@ public class Axial extends PApplet {
         im.addPosition(new Position(WIDTH-5, initialImage+imageHeight+imagePadding, RIGHT));
         im.addPosition(new Position(WIDTH-5, initialImage+2*(imageHeight+imagePadding), RIGHT));
 
-        for(int i = 0; i < checkins.size(); i++) {
-            FoursquareMarker m = (FoursquareMarker)(checkinMarkers.get(i));
+
+        //Load Foursquare checkins
+        checkins = GeoJSONReader.loadData(this, "foursquare.geojson");
+        Collections.sort(checkins, new FeatureByTimestampComparer());
+
+        mm = new AxialMarkerManager();
+        map.addMarkerManager(mm);
+
+        Hashtable<String, FoursquareUserMarker> users = new Hashtable<String, FoursquareUserMarker>();
+
+        for (int i = 0; i < checkins.size(); i++) {
             Feature c = checkins.get(i);
+            Position p = new Position((Integer)(c.getProperty("lat")), (Integer)(c.getProperty("lng")));
+            p.setTimestamp((Integer)(c.getProperty("timestamp")));
+            String name = c.getStringProperty("name");
+            if (users.containsKey(c.getStringProperty("name")) {
+                users.get(name).addPosition(p);
+            } else {
+                FoursquareUserMarker user = new FoursquareUserMarker();
+                user.addPosition(p);
+                users.put(name, user);
+            }
+
+
             m.setTimestamp((Integer)(c.getProperty("timestamp")));
             if (!c.getStringProperty("text").equals("") && GeoUtils.getDistance(palladium, ((PointFeature)c).getLocation()) < 10) {
                 TextFeature tf = new TextFeature(c.getStringProperty("text") + " @ " + c.getStringProperty("venue"));
@@ -116,9 +131,6 @@ public class Axial extends PApplet {
                 }
             }
         }
-        mm = new AxialMarkerManager();
-        mm.addMarkers(checkinMarkers);
-        map.addMarkerManager(mm);
     }
 
 

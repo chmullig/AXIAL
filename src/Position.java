@@ -3,6 +3,7 @@ import processing.core.*;
 public class Position {
     public int x;
     public int y;
+    public int timestamp;
     int alignment = PConstants.LEFT;
 
     public Position(int x, int y) {
