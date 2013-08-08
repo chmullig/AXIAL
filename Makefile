@@ -31,7 +31,7 @@ video.mp4: frames/frame-000010.tif
 	ffmpeg -f image2 -r 30 -i frames/frame-%06d.tif -r 30 -i ~/Dropbox/05\ -\ Empire\ State\ Of\ Mind\ \[Jay-Z\ +\ Alicia\ Keys\]\ \(Explicit\).mp3  -c:v libx264 -pix_fmt yuv420p -threads 4 -shortest -y video.mp4
 
 gitshots.mp4:
-	ffmpeg -f image2 -r 5 -i '~/.gitshots/%*.jpg' -r 30 -q:v 2 -y gitshots.mp4
+	ffmpeg -f image2 -r 8 -pattern_type glob -i '/Users/chmullig/.gitshots/*.jpg' -r 24 -c:v libx264 -pix_fmt yuv420p -threads 2 -y gitshots.mp4
 
 
 remove_frames:

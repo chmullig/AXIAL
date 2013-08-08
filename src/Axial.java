@@ -137,6 +137,7 @@ public class Axial extends PApplet {
 
         //Clock
         pushStyle();
+        textFont(createFont("SansSerif",32));
         textAlign(RIGHT);
         Date dt = new Date((long)currentTime*1000);
         SimpleDateFormat formatter = new SimpleDateFormat("EEE, MMM d, a");
@@ -146,9 +147,9 @@ public class Axial extends PApplet {
             stroke(255, 0);
             fill(255, 255, 255, 155);
             int clockSize = (int)(textWidth(formattedDate));
-            rect(WIDTH-9-clockSize, 2, WIDTH-2, 22);
+            rect(WIDTH-11-clockSize, 2, WIDTH-2, 36);
             popStyle();
-        text(formattedDate, WIDTH-5, 18);
+        text(formattedDate, WIDTH-5, 32);
         popStyle();
 
         if (saveFrames) {
