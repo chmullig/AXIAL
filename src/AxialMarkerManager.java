@@ -9,13 +9,23 @@ import de.fhpotsdam.unfolding.*;
 import de.fhpotsdam.unfolding.core.*;
 import de.fhpotsdam.unfolding.geo.*;
 import de.fhpotsdam.utils.*;
+import java.util.*;
 
 public class AxialMarkerManager extends MarkerManager<Marker> {
     int currentTimestamp;
-    double decayFactor = .995;
+    Dictionary<FoursquareUserMarker, List<Position>> userPositions;
 
     public AxialMarkerManager() {
         super();
+        userPositions = new Hashtable<FoursquareUserMarker, List<Position>>();
+    }
+
+    public void addPosition(FoursquareUserMarker user, Position position) {
+        if (userPositions.containsKey(user)) {
+            userPositions.get(user).add(position);
+        } else {
+            userPositions.put(user, new List<Position>(position));
+        }
     }
 
     public void setTimestamp(int newTimestamp) {
@@ -26,27 +36,17 @@ public class AxialMarkerManager extends MarkerManager<Marker> {
         return currentTimestamp;
     }
 
-    public void setDecayFactor(double newDecay) {
-        decayFactor = newDecay;
-    }
-
-    public double getDecayFactor() {
-        return decayFactor;
-    }
-
-
     public void draw() {
-        for (Marker marker : markers) {
-            if (((FoursquareMarker)(marker)).getTimestamp() <= currentTimestamp) {
-                int oldAlpha = ((FoursquareMarker)(marker)).getAlpha();
-                if (oldAlpha > 0) {
-                    ((FoursquareMarker)(marker)).setAlpha((int)(oldAlpha*decayFactor));
-                    marker.draw(map);
+        for (Enumeration<FoursquareUserMarker> e = userPositions.key(); e.hasMoreElments();) {
+            FoursquareUserMarker user = e.nextElement();
+            List<Position> positions = userPositions.get(user);
+            for (Position p : positions) {
+                if (p.timestamp <= currentTimestamp) {
+                    user.setTarget(p);
                 }
             }
+            user.draw(map);
         }
     }
-
-
 
 }
