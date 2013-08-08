@@ -99,15 +99,18 @@ public class Axial extends PApplet {
         Hashtable<String, FoursquareUserMarker> users = new Hashtable<String, FoursquareUserMarker>();
 
         for (int i = 0; i < checkins.size(); i++) {
-            Feature c = checkins.get(i);
-            Position p = new Position((Integer)(c.getProperty("lat")), (Integer)(c.getProperty("lng")));
-            p.setTimestamp((Integer)(c.getProperty("timestamp")));
+            PointFeature c = (PointFeature)checkins.get(i);
+
+
+
+            Position p = new Position((int)c.getLocation().getLat(), (int)c.getLocation().getLon());
+            p.timestamp = ((Integer)(c.getProperty("timestamp")));
             String name = c.getStringProperty("name");
             if (users.containsKey(c.getStringProperty("name"))) {
-                users.get(name).addPosition(p);
+                mm.addPosition(users.get(name), p);
             } else {
                 FoursquareUserMarker user = new FoursquareUserMarker();
-                user.addPosition(p);
+                mm.addPosition(user, p);
                 users.put(name, user);
             }
 

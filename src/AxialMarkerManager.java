@@ -13,7 +13,7 @@ import java.util.*;
 
 public class AxialMarkerManager extends MarkerManager<Marker> {
     int currentTimestamp;
-    Dictionary<FoursquareUserMarker, List<Position>> userPositions;
+    Hashtable<FoursquareUserMarker, List<Position>> userPositions;
 
     public AxialMarkerManager() {
         super();
@@ -24,7 +24,9 @@ public class AxialMarkerManager extends MarkerManager<Marker> {
         if (userPositions.containsKey(user)) {
             userPositions.get(user).add(position);
         } else {
-            userPositions.put(user, new List<Position>(position));
+            List l = new ArrayList<Position>();
+            l.add(position);
+            userPositions.put(user, l);
         }
     }
 
@@ -37,7 +39,7 @@ public class AxialMarkerManager extends MarkerManager<Marker> {
     }
 
     public void draw() {
-        for (Enumeration<FoursquareUserMarker> e = userPositions.key(); e.hasMoreElments();) {
+        for (Enumeration<FoursquareUserMarker> e = userPositions.keys(); e.hasMoreElements();) {
             FoursquareUserMarker user = e.nextElement();
             List<Position> positions = userPositions.get(user);
             for (Position p : positions) {
