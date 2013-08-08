@@ -16,8 +16,7 @@ import de.fhpotsdam.utils.*;
 public class FoursquareUserMarker extends SimplePointMarker {
     int timestamp;
     int alphaLevel = 255;
-    Position current;
-    Position target;
+    Location target;
     float easing = 0.15f;
 
     public FoursquareUserMarker() {
@@ -43,45 +42,43 @@ public class FoursquareUserMarker extends SimplePointMarker {
         return alphaLevel;
     }
 
-    public void setPosition(Position current) {
-        this.current = current;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
-    public Position getPosition() {
-        return current;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setTarget(Position target) {
+    public void setTarget(Location target) {
         this.target = target;
     }
 
-    public Position getTarget() {
+    public Location getTarget() {
         return target;
     }
 
-
-    public void draw(PGraphics pg) {
-        //calculate where the new x and new y should be
-
-        //current.x, current.y
-        //target.x and target.y
-
-        Position diff = new Position(current.x - target.x, current.y - target.y);
+    public void updateLocation() {
+        Location diff = new Location(location.x - target.x, location.y - target.y);
 
         if (Math.abs(diff.x) > 1) {
-             current.x += diff.x * easing;
+             location.x += diff.x * easing;
         }
 
         if (Math.abs(diff.y) > 1) {
-             current.y += diff.y * easing;
+             location.y += diff.y * easing;
         }
+    }
 
+
+
+    public void draw(PGraphics pg, int x, int y) {
         pg.pushStyle();
         pg.noStroke();
         pg.fill(236, 100, 90, alphaLevel/3);
-        pg.ellipse(current.x, current.y, 10, 10);
+        pg.ellipse(x, y, 10, 10);
         pg.fill(236, 100, 90, alphaLevel*2);
-        pg.ellipse(current.x, current.y, 3, 3);
+        pg.ellipse(x, y, 3, 3);
         pg.popStyle();
     }
 }
