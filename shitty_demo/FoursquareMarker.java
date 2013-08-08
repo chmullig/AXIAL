@@ -39,8 +39,10 @@ public class FoursquareMarker extends SimplePointMarker {
   public void draw(PGraphics pg, float x, float y) {
     pg.pushStyle();
     pg.noStroke();
-    pg.fill(200, 200, 0, alphaLevel);
-    pg.ellipse(x, y, 5, 5);
+    pg.fill(236, 100, 90, alphaLevel/3);
+    pg.ellipse(x, y, 10, 10);
+    pg.fill(236, 100, 90, alphaLevel*2);
+    pg.ellipse(x, y, 3, 3);
     pg.popStyle();
   }
 }

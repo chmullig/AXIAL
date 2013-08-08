@@ -45,12 +45,12 @@ public class Axial extends PApplet {
     int initialTime = 1370040000;
     int endTime = 1376107200;
     int currentTime = initialTime;
-    int frameLength = 60*15;
+    int frameLength = 60*20;
     int lastPos = 0;
     int WIDTH = 1024;
     int HEIGHT = 768;
-    int imageHeight = 200;
-    int imagePadding = 15;
+    int imageHeight = 190;
+    int imagePadding = 20;
     static boolean saveFrames = true;
     AxialMarkerManager mm;
     FeatureManager fm;
