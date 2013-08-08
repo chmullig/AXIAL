@@ -6,3 +6,9 @@
 *.ear
 
 .DS_store
+checkins.geojson
+checkins/
+data/
+irc/
+shitty_demo/applet/
+*.mp4*
